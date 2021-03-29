@@ -172,7 +172,7 @@
 <p>Contributions may take multiple forms:</p>
 <ul>
 <li>💻 <strong>code</strong>, of course, but not only (there is a lot more !)</li>
-<li>📖 <strong>documentation</strong></li>
+<li>📖 <strong>documentation</strong> : <a href="#build-the-documentation">here</a> a guide to edit and build the documentation</li>
 <li>🎤 Any help on <strong>communication</strong>: writing blog posts, speaking about scaphandre in conferences, speaking and writing about the responsibility of tech to be sustainable as well !</li>
 <li>🧬 <strong>structuring the project</strong> and the <strong>community</strong> is also a very important topic. Feel free to propose help, or start <a href="https://github.com/hubblo-org/scaphandre/discussions">discussions</a> about that.</li>
 </ul>
@@ -183,6 +183,16 @@
 <p>This project intends to use <a href="https://conventionalcommits.org/">conventionnal commit messages</a> and the <a href="https://nvie.com/posts/a-successful-git-branching-model/">gitflow</a> workflow.</p>
 <p>Scaphandre is a not only a tool, but a framework. Modules dedicated to collect energy comsumption data from the host are called <a href="docs/sensors"><strong>Sensors</strong></a>.
 Modules that are dedicated to send this data to a given channel or remote system are called <a href="docs/exporters"><strong>Exporters</strong></a>. New Sensors and Exporters are going to be created and all contributions are welcome. For more on the internal structure please jump <a href="explanations/internal-structure.html">here</a>.</p>
+<h3 id="edit-and-build-the-documentation"><a class="header" href="#edit-and-build-the-documentation">Edit and build the documentation</a></h3>
+<p>Documentation source files are in <code>docs_src</code>, edit the content there and propose pull-requests on the scaphandre repository as if it was a code pull-request.</p>
+<p>Here is how to build and publish the documentation after a change. First download <a href="https://github.com/rust-lang/mdBook">mdbook</a>, the static site generator we use for the <a href="https://hubblo-org.github.io/scaphandre-documentation">documentation website</a>:</p>
+<pre><code>cargo install mdbook
+</code></pre>
+<p>Then fork the <a href="https://github.com/hubblo-org/scaphandre-documentation">scaphandre-documentation</a> repository and clone the resulting repository locally.</p>
+<p>Place the resulting documentation folder next to scaphandre's folder. Then run the build:</p>
+<pre><code>cd scaphandre &amp;&amp; mdbook build
+</code></pre>
+<p>You should then have the result in <code>scaphandre-documentation/docs</code>. Commit, push and propose a PR to publish the changes.</p>
 
                     </main>
 
