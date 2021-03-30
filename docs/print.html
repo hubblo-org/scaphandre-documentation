@@ -222,6 +222,9 @@ docker-compose up -d
 <p>Grafana will be available at <code>http://localhost:3000</code>, the default username is <code>admin</code> and the password is <code>secret</code>.</p>
 <p>Refresh the dashboard after 30s or enable auto-refresh and you should see the data filling the graphs.</p>
 <p>The <code>process_filter</code> textbox on the top of the graph allows you to look at the power consumption of a single application or service. Type the name of the program you want to look at and press enter. In the <code>Filtered process (process_filter) power, by exe</code> graph, on the 3rd line, you should now see the power cosumption of the given program.</p>
+<p>To remove the stack just run this command in the same folder:</p>
+<pre><code>docker-compose down
+</code></pre>
 <h1 id="installation--compilation"><a class="header" href="#installation--compilation">Installation &amp; compilation</a></h1>
 <h2 id="compile-scaphandre-from-source"><a class="header" href="#compile-scaphandre-from-source">Compile scaphandre from source</a></h2>
 <p>We recommand using this version of the rust toolchain or later:</p>
