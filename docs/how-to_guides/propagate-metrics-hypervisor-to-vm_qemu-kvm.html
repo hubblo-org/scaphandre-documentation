@@ -163,14 +163,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="propagate-power-consumption-metrics-from-hypervisor-to-virtual-machines-qemukvm"><a class="header" href="#propagate-power-consumption-metrics-from-hypervisor-to-virtual-machines-qemukvm">Propagate power consumption metrics from hypervisor to virtual machines (Qemu/KVM)</a></h1>
-<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+                        <h1><a class="header" href="#propagate-power-consumption-metrics-from-hypervisor-to-virtual-machines-qemukvm" id="propagate-power-consumption-metrics-from-hypervisor-to-virtual-machines-qemukvm">Propagate power consumption metrics from hypervisor to virtual machines (Qemu/KVM)</a></h1>
+<h2><a class="header" href="#introduction" id="introduction">Introduction</a></h2>
 <p>A major pain point in measuring power consumption is doing so inside a virtual machine. A virtual machine usually doesn't have access to power metrics.</p>
 <p>Scaphandre aims at solving that by enabling a communication between a scaphandre instance <strong>on the hypervisor/bare metal machine</strong> and <strong>another one</strong> running <strong>on the virtual machine</strong>.
 The scaphandre agent on the hypervisor will <strong>compute the metrics meaningful for that virtual machine</strong> and the one <strong>on the VM access those metrics</strong> to allow its user/administrator to use the data as if they had access to power metrics in the first place (as if they were on a bare metal machine).</p>
 <p>This allows to break opacity in a virtualization context, if you have access to the hypervisor, or in a  public cloud context if the provider uses scaphandre on its hypervisors.</p>
 <img src="../virtu.cleaned.png" width="650"/>
-<h2 id="how-to"><a class="header" href="#how-to">How to</a></h2>
+<h2><a class="header" href="#how-to" id="how-to">How to</a></h2>
 <p>This is working on Qemu/KVM hypervisors only.</p>
 <p>The idea is to run the agent on the hypervisor, with the <a href="../references/exporter-qemu.html">qemu exporter</a>:</p>
 <pre><code>scaphandre qemu

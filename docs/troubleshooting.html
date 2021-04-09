@@ -163,19 +163,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h1>
-<h3 id="i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter"><a class="header" href="#i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter">I get a <strong>permission denied</strong> error when I run scaphandre, no matter what is the exporter</a></h3>
+                        <h1><a class="header" href="#troubleshooting" id="troubleshooting">Troubleshooting</a></h1>
+<h3><a class="header" href="#i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter" id="i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter">I get a <strong>permission denied</strong> error when I run scaphandre, no matter what is the exporter</a></h3>
 <p>On some Linux distributions (ubuntu 20.04 for sure), the energy counters files that the <a href="references/sensor-powercap_rapl.html">PowercapRAPL sensor</a> uses, are owned by root. (since late 2020)</p>
 <p>To ensure this is your issue and fix that quickly you can run the <a href="https://raw.githubusercontent.com/hubblo-org/scaphandre/main/init.sh">init.sh</a> script:</p>
 <pre><code>bash init.sh
 </code></pre>
 <p>Then run scaphandre. If it does not work, the issue is somewhere else.</p>
-<h3 id="i-get-a-no-such-device-error-the-intel_rapl-of-intel_rapl_common-kernel-modules-are-present"><a class="header" href="#i-get-a-no-such-device-error-the-intel_rapl-of-intel_rapl_common-kernel-modules-are-present">I get a <strong>no such device</strong> error, the intel_rapl of intel_rapl_common kernel modules are present</a></h3>
+<h3><a class="header" href="#i-get-a-no-such-device-error-the-intel_rapl-of-intel_rapl_common-kernel-modules-are-present" id="i-get-a-no-such-device-error-the-intel_rapl-of-intel_rapl_common-kernel-modules-are-present">I get a <strong>no such device</strong> error, the intel_rapl of intel_rapl_common kernel modules are present</a></h3>
 <p>It can mean that your cpu doesn't support RAPL. Please refer to the <a href="compatibility.html">compatibility</a> section to be sure.</p>
-<h3 id="i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error"><a class="header" href="#i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error">I can't mount the required kernel modules, getting a <code>Could'nt find XXX modules</code> error</a></h3>
+<h3><a class="header" href="#i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error" id="i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error">I can't mount the required kernel modules, getting a <code>Could'nt find XXX modules</code> error</a></h3>
 <p>If you are in a situation comparable to <a href="https://github.com/hubblo-org/scaphandre/issues/59">this one</a>, you may need to install additional packages.</p>
 <p>On ubuntu 20.01 and 20.10, try to install <code>linux-modules-extra-$(uname-r)</code> with apt. Then you should be able to <code>modprobe intel_rapl_common</code>.</p>
-<h3 id="on-an-amd-cpu-machine-i-get-the-following-stracktrace"><a class="header" href="#on-an-amd-cpu-machine-i-get-the-following-stracktrace">On an AMD cpu machine, I get the following stracktrace</a></h3>
+<h3><a class="header" href="#on-an-amd-cpu-machine-i-get-the-following-stracktrace" id="on-an-amd-cpu-machine-i-get-the-following-stracktrace">On an AMD cpu machine, I get the following stracktrace</a></h3>
 <pre><code>scaphandre::sensors::powercap_rapl: Couldn't find intel_rapl modules.
 thread 'main' panicked at 'Trick: if you are running on a vm, do not forget to use --vm parameter invoking scaphandre at the command line', src/sensors/mod.rs:238:18
 stack backtrace:
@@ -204,6 +204,18 @@ stack backtrace:
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 </code></pre>
 <p>We verified that scaphandre (and especially the powercap_rapl sensor) works on AMD Zen processors with a Linux kernel <strong>5.11 or later</strong>. Before that kernel version, it won't probably work as the <a href="https://www.phoronix.com/scan.php?page=news_item&amp;px=AMD-Zen-PowerCap-RAPL-5.11">drivers</a> needed to feed powercap with rapl data are not present.</p>
+<h3><a class="header" href="#trying-to-build-the-project-i-get-this-error" id="trying-to-build-the-project-i-get-this-error">Trying to build the project I get this error</a></h3>
+<pre><code>error: linker `cc` not found
+  |
+  = note: No such file or directory (os error 2)
+
+error: aborting due to previous error
+
+error: could not compile `log`
+</code></pre>
+<p>You need compiling tooling. On Ubuntu/Debian, run:</p>
+<pre><code> sudo apt install build-essential
+</code></pre>
 
                     </main>
 
