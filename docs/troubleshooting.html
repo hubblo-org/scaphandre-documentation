@@ -204,6 +204,18 @@ stack backtrace:
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 </code></pre>
 <p>We verified that scaphandre (and especially the powercap_rapl sensor) works on AMD Zen processors with a Linux kernel <strong>5.11 or later</strong>. Before that kernel version, it won't probably work as the <a href="https://www.phoronix.com/scan.php?page=news_item&amp;px=AMD-Zen-PowerCap-RAPL-5.11">drivers</a> needed to feed powercap with rapl data are not present.</p>
+<h3 id="trying-to-build-the-project-i-get-this-error"><a class="header" href="#trying-to-build-the-project-i-get-this-error">Trying to build the project I get this error</a></h3>
+<pre><code>error: linker `cc` not found
+  |
+  = note: No such file or directory (os error 2)
+
+error: aborting due to previous error
+
+error: could not compile `log`
+</code></pre>
+<p>You need compiling tooling. On Ubuntu/Debian, run:</p>
+<pre><code> sudo apt install build-essential
+</code></pre>
 
                     </main>
 

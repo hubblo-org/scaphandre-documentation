@@ -178,18 +178,63 @@ USAGE:
 
 FLAGS:
     -h, --help       Prints help information
+        --mtls       Connect to a Riemann server using mTLS. Parameters address, ca, cert and key must be defined.
     -q, --qemu       Instruct that scaphandre is running on an hypervisor
     -V, --version    Prints version information
 
 OPTIONS:
-    -a, --address &lt;address&gt;               Riemann ipv6 or ipv4 address [default: localhost]
+    -a, --address &lt;address&gt;               Riemann ipv6 or ipv4 address. If mTLS is used then server fqdn must be
+                                          provided [default: localhost]
     -d, --dispatch &lt;dispatch_duration&gt;    Duration between metrics dispatch [default: 5]
     -p, --port &lt;port&gt;                     Riemann TCP port number [default: 5555]
-
+        --ca &lt;cafile&gt;                     CA certificate file (.pem format)
+        --cert &lt;certfile&gt;                 Client certificate file (.pem format)
+        --key &lt;keyfile&gt;                   Client RSA key
 </code></pre>
 <p>With default options values, the metrics are sent to http://localhost:5555 every 5 seconds</p>
-<p>Use -q or --qemu option if you are running scaphandre on a hypervisor. In that case a label with the vm name will be added to all <code>qemu-system*</code> processes.
+<p>Use <code>--mtls</code> option to connect to a Riemann server using mTLS. In such case, you must provide the following parameters:</p>
+<ul>
+<li><code>--address</code> to specify the <strong>fqdn</strong> of the Riemann server.</li>
+<li><code>--ca</code> to specify the CA that authenticate the Riemann server.</li>
+<li><code>--cert</code> to specify the client certificate.</li>
+<li><code>--key</code> to specify the <strong>RSA</strong> key to be used by the client certificate.</li>
+</ul>
+<p>Use <code>-q</code> or <code>--qemu</code> option if you are running scaphandre on a hypervisor. In that case a label with the vm name will be added to all <code>qemu-system*</code> processes.
 This will allow to easily create charts consumption for each vm and defined which one is the top contributor.</p>
+<p><em>Troubleshooting note:</em> run  Scaphandre using <code>-vv</code> parameter. If Scaphandre is stuck on the <code>Send data</code> log event, ensure you are connecting the Riemann server using a TLS port (5554 in the below example).
+As a reference here is a Riemann configuration:</p>
+<pre><code>; -*- mode: clojure; -*-
+; vim: filetype=clojure
+
+(logging/init {:file &quot;riemann.log&quot;})
+
+; Listen on the local interface over TCP (5555), UDP (5555), TLS/TCP (5554)  and websockets
+; (5556)
+(let [host &quot;0.0.0.0&quot;]
+  (tcp-server {:host host})
+  (tcp-server {:host host
+               :port 5554
+               :tls? true
+               :key &quot;/client.key.pkcs8&quot;
+               :cert &quot;/client.pem&quot;
+               :ca-cert &quot;/CA.pem&quot;})
+  (udp-server {:host host})
+  (ws-server  {:host host}))
+
+; Expire old events from the index every 5 seconds.
+(periodically-expire 5)
+
+(let [index (index)]
+  ; Inbound events will be passed to these streams:
+  (streams
+    (default :ttl 60
+      ; Index all events immediately.
+      index
+
+      ; Log expired events.
+      (expired
+        (fn [event] (info &quot;expired&quot; event))))))
+</code></pre>
 <h2 id="metrics-exposed"><a class="header" href="#metrics-exposed">Metrics exposed</a></h2>
 <p>Typically the Riemann exporter is working in the same way as the prometheus exporter regarding metrics. Please look at details in <a href="exporter-prometheus.html">Prometheus exporter</a> documentations.</p>
 <p>There is only one exception about <code>process_power_consumption_microwatts</code> each process has a service name <code>process_power_consumption_microwatts_pid_exe</code>.</p>
