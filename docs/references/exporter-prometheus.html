@@ -164,7 +164,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="prometheus-exporter"><a class="header" href="#prometheus-exporter">Prometheus exporter</a></h1>
-<img src="https://github.com/hubblo-org/scaphandre/raw/main/screen-prometheus.cleaned.png">
+<img src="https://github.com/hubblo-org/scaphandre/raw/main/docs_src/screen-prometheus.cleaned.png">
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>You can launch the prometheus exporter this way (running the default powercap_rapl sensor):</p>
 <pre><code>scaphandre prometheus
@@ -179,6 +179,7 @@
 		scaphandre prometheus [FLAGS] [OPTIONS]
 
 	FLAGS:
+        --containers    Monitor and apply labels for processes running as containers
 		-h, --help       Prints help information
 		-q, --qemu       Instruct that scaphandre is running on an hypervisor
 		-V, --version    Prints version information
@@ -242,6 +243,32 @@ This will allow to easily create charts consumption for each vm and defined whic
 <li><code>cmdline</code>: this contains the whole command line with the executable path and its parameters (concatenated). You can filter on this label by using prometheus <code>=~</code> operator to match a regular expression pattern. This is very practical in many situations.</li>
 <li><code>instance</code>: this is a prometheus generated label to enable you to filter the metrics by the originating host. This is very useful when you monitor distributed services, so that you can not only sum the metrics for the same service on the different hosts but also see what instance of that service is consuming the most, or notice differences beteween hosts that may not have the same hardware, and so on...</li>
 <li><code>pid</code>: is the process id, which is useful if you want to track a specific process and have your eyes on what's happening on the host, but not so practical to use in a more general use case</li>
+</ul>
+<h3 id="get-container-specific-labels-on-scaph_process_power_consumption_microwatts-metrics"><a class="header" href="#get-container-specific-labels-on-scaph_process_power_consumption_microwatts-metrics">Get container-specific labels on scaph_process_power_consumption_microwatts metrics</a></h3>
+<p>The flag --containers enables Scaphandre to collect data about the running Docker containers or Kubernetes pods on the local machine. This way, it adds specific labels to make filtering processes power consumption metrics by their encapsulation in containers easier.</p>
+<p>Generic labels help to identify the container runtime and scheduler used (based on the content of <code>/proc/PID/cgroup</code>):</p>
+<p><code>container_scheduler</code>: possible values are <code>docker</code> or <code>kubernetes</code>. If this label is not attached to the metric, it means that scaphandre didn't manage to identify the container scheduler based on cgroups data.</p>
+<p>Then the label <code>container_runtime</code> could be attached. The only possible value for now is <code>containerd</code>.</p>
+<p><code>container_id</code> is the ID scaphandre got from /proc/PID/cgroup for that container.</p>
+<p>For Docker containers (if <code>container_scheduler</code> is set), available labels are :</p>
+<ul>
+<li><code>container_names</code>: is a string containing names attached to that container, according to the docker daemon</li>
+<li><code>container_docker_version</code>: version of the docker daemon</li>
+<li><code>container_label_maintainer</code>: content of the maintainer field for this container</li>
+</ul>
+<p>For containers coming from a docker-compose file, there is a bunch of labels related to data coming from the docker daemon:</p>
+<ul>
+<li><code>container_label_com_docker_compose_project_working_dir</code></li>
+<li><code>container_label_com_docker_compose_container_number</code></li>
+<li><code>container_label_com_docker_compose_project_config_files</code></li>
+<li><code>container_label_com_docker_compose_version</code></li>
+<li><code>container_label_com_docker_compose_service</code></li>
+<li><code>container_label_com_docker_compose_oneoff</code></li>
+</ul>
+<p>For Kubernetes pods (if <code>container_scheduler</code> is set), available labels are :</p>
+<ul>
+<li><code>kubernetes_node_name</code>: identifies the name of the kubernetes node scaphandre is running on</li>
+<li><code>kubernetes_pod_name</code>: the name of the pod the container belongs to</li>
 </ul>
 
                     </main>
