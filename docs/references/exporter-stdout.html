@@ -168,16 +168,28 @@
 <p>You can launch the stdout exporter this way (running the default powercap_rapl sensor):</p>
 <pre><code>scaphandre stdout
 </code></pre>
-<p>Default behavior is to measure and show metrics periodically during 10 seconds. You can change that timeout with <code>-t</code>. Here is how to display metrics during one minute:</p>
+<p>Default behavior is to measure and show metrics periodically during 10 seconds. You can change that timeout with <code>-t</code>.
+A value of <code>-t 0</code> will display top consumers infinitely and must be interrupted with ctrl-c.</p>
+<p>Here is how to display metrics during one minute:</p>
 <pre><code>scaphandre stdout -t 60
 </code></pre>
-<p>You can change as well the step measure duration with -s. Here is how to display metrics during one minutes with a 5s step:</p>
+<p>You can change as well the step measure duration with <code>-s</code>. Here is how to display metrics during one minutes with a 5s step:</p>
 <pre><code>scaphandre stdout -t 60 -s 5
 </code></pre>
+<p>You can change the number of top consumers displayed with <code>-p</code>. Here is how to display the first 20 top consumers:</p>
+<pre><code>scaphandre stdout -p 20
+</code></pre>
+<p>You can filter the processes to display with <code>-r</code>. A warning will be risen if this option is used with <code>-p</code> at the same time.
+In such case, <code>-p</code> behavior is disabled.</p>
+<p>The <code>-r</code> expected parameter is a regular expression. Details can be found <a href="https://docs.rs/regex/1.4.5/regex/#syntax">here</a> and tested <a href="https://rustexp.lpil.uk/">here</a>.</p>
+<p>Here is how to display power data for the 'scaphandre' process:</p>
+<pre><code>scaphandre stdout -r 'scaphandre'
+</code></pre>
+<p>Note</p>
 <p>As always exporter's options can be displayed with <code>-h</code>:</p>
 <pre><code>$ scaphandre stdout -h
 scaphandre-stdout
-Stdout exporter allows you to output the power consumption data in the terminal.
+Stdout exporter allows you to output the power consumption data in the terminal
 
 USAGE:
     scaphandre stdout [OPTIONS]
@@ -187,8 +199,12 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
--s, --step &lt;step_duration&gt;    Set measurement step duration in seconds. [default: 2]
--t, --timeout &lt;timeout&gt;       Maximum time spent measuring, in seconds. [default: 10]
+    -p, --process &lt;process_number&gt;    Number of processes to display. [default: 5]
+    -r, --regex &lt;regex_filter&gt;        Filter processes based on regular expressions (e.g: 'scaph\w\wd.e'). This option
+                                      disable '-p' or '--process' one.
+    -s, --step &lt;step_duration&gt;        Set measurement step duration in seconds. [default: 2]
+    -t, --timeout &lt;timeout&gt;           Maximum time spent measuring, in seconds. 0 means continuous measurement.
+                                      [default: 10]
 </code></pre>
 
                     </main>

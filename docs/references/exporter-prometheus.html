@@ -203,7 +203,6 @@ This will allow to easily create charts consumption for each vm and defined whic
 <p>And some more deep metrics that you may want if you need to make more complex calculations and data processing:</p>
 <ul>
 <li><code>scaph_host_energy_microjoules</code> : Energy measurement for the whole host, as extracted from the sensor, in microjoules. (COUNTER)</li>
-<li><code>scaph_host_energy_timestamp_seconds</code>: Timestamp in seconds when hose_energy_microjoules has been computed. (COUNTER)</li>
 <li><code>scaph_socket_power_microwatts{socket_id=&quot;$SOCKET_ID&quot;}</code>: Power measurement relative to a CPU socket, in microwatts. SOCKET_ID being the socket numerical id (GAUGE)</li>
 </ul>
 <p>If you hack scaph or just want to investigate its behavior, you may be interested in some internal metrics:</p>
@@ -256,7 +255,7 @@ This will allow to easily create charts consumption for each vm and defined whic
 <li><code>container_docker_version</code>: version of the docker daemon</li>
 <li><code>container_label_maintainer</code>: content of the maintainer field for this container</li>
 </ul>
-<p>For containers coming from a docker-compose file, there is a bunch of labels related to data coming from the docker daemon:</p>
+<p>For containers coming from a docker-compose file, there are a bunch of labels related to data coming from the docker daemon:</p>
 <ul>
 <li><code>container_label_com_docker_compose_project_working_dir</code></li>
 <li><code>container_label_com_docker_compose_container_number</code></li>
@@ -269,6 +268,7 @@ This will allow to easily create charts consumption for each vm and defined whic
 <ul>
 <li><code>kubernetes_node_name</code>: identifies the name of the kubernetes node scaphandre is running on</li>
 <li><code>kubernetes_pod_name</code>: the name of the pod the container belongs to</li>
+<li><code>kubernetes_pod_namespace</code>: the namespace of the pod the container belongs to</li>
 </ul>
 
                     </main>
