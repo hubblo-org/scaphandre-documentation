@@ -425,7 +425,18 @@ The scaphandre agent on the hypervisor will <strong>compute the metrics meaningf
 <h2 id="automatic-installation-with-ansible"><a class="header" href="#automatic-installation-with-ansible">Automatic installation with ansible</a></h2>
 <p>There is a <a href="https://github.com/hubblo-org/scaphandre/blob/dev/automation/ansible/install-configure-prometheuspush-rhel.yml">sample Ansible playbook</a> available in the <a href="https://github.com/hubblo-org/scaphandre/tree/dev/automation/ansible">automation/ansible</a> folder of the project.</p>
 <p>This can be used this way :</p>
-<pre><code>ansible-playbook -i inventory -b -u myunprivilegeduser -K install-configure-prometheuspush-rhel.yml</code></pre>
+<pre><code>ansible-playbook -i inventory -b -u myunprivilegeduser -K install-configure-prometheuspush-rhel.yml
+</code></pre>
+<p>Beware of the playbook parameters :</p>
+<pre><code>rhel_version: 9
+scaphandre_version: &quot;dev0.5.10&quot;
+pushgateway_host: localhost
+pushgateway_scheme: http
+pushgateway_port: 9092
+scaphandre_config_path: /etc/scaphandre/prometheuspush
+service_name: scaphandre-prometheuspush
+</code></pre>
+<p>Ensure to change those to match your context, including changing rhel version if needed (8 and 9 are supported) and parameters to reach the Push Gateway on the network.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="how-scaphandre-computes-per-process-power-consumption"><a class="header" href="#how-scaphandre-computes-per-process-power-consumption">How scaphandre computes per process power consumption</a></h1>
 <p>Scaphandre is a tool that makes it possible to see the power being used by a single process on a computer.</p>
 <p>This sounds like a simple thing thing to be able to do, but in practice a number of details can make this more complex.</p>
