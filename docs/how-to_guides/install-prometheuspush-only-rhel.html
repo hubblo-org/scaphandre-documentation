@@ -161,8 +161,8 @@
 <p>Those are prometheus-push exporter CLI options. Run the executable to get the reference of the options :</p>
 <pre><code>/usr/bin/scaphandre-prometheuspush --help
 </code></pre>
-<p>A simple configuration to target Push Gateway reachable on https://myserver.mydomain:PORT would look like :</p>
-<pre><code>SCAPHANDRE_ARGS=&quot;prometheus-push -H myserver.mydomain -S https -p PORT&quot;
+<p>A simple configuration to target Push Gateway reachable on https://myserver.mydomain:PORT and send data every 30 seconds would look like :</p>
+<pre><code>SCAPHANDRE_ARGS=&quot;prometheus-push -H myserver.mydomain -S https -p PORT -s 30&quot;
 </code></pre>
 <p>Once the configuration is changed, you can restart the service and ensure it is enabled as well for next reboot :</p>
 <pre><code>systemctl restart scaphandre-prometheuspush &amp;&amp; systemctl enable scaphandre-prometheuspush
@@ -215,6 +215,22 @@ service_name: scaphandre-prometheuspush
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

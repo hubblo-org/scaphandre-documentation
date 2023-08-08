@@ -152,7 +152,7 @@
 <p>It can mean that your cpu doesn't support RAPL. Please refer to the <a href="compatibility.html">compatibility</a> section to be sure.</p>
 <h3 id="i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error"><a class="header" href="#i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error">I can't mount the required kernel modules, getting a <code>Could'nt find XXX modules</code> error</a></h3>
 <p>If you are in a situation comparable to <a href="https://github.com/hubblo-org/scaphandre/issues/59">this one</a>, you may need to install additional packages.</p>
-<p>On ubuntu 20.01 and 20.10, try to install <code>linux-modules-extra-$(uname-r)</code> with apt. Then you should be able to <code>modprobe intel_rapl_common</code>.</p>
+<p>On ubuntu 20.01 and 20.10, try to install <code>linux-modules-extra-$(uname -r)</code> with apt. Then you should be able to <code>modprobe intel_rapl_common</code>.</p>
 <h3 id="on-an-amd-cpu-machine-i-get-the-following-stracktrace"><a class="header" href="#on-an-amd-cpu-machine-i-get-the-following-stracktrace">On an AMD cpu machine, I get the following stracktrace</a></h3>
 <pre><code>scaphandre::sensors::powercap_rapl: Couldn't find intel_rapl modules.
 thread 'main' panicked at 'Trick: if you are running on a vm, do not forget to use --vm parameter invoking scaphandre at the command line', src/sensors/mod.rs:238:18
@@ -224,6 +224,22 @@ error: could not compile `log`
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

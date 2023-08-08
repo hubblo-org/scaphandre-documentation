@@ -235,29 +235,9 @@ Then you have the 5 processes consuming the most power during the last two measu
 <li>scaphandre on MacOSX</li>
 <li>and more...</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="install-scaphandre-on-windows"><a class="header" href="#install-scaphandre-on-windows">Install Scaphandre on Windows</a></h1>
-<p><strong>!! Warning: This is a first testing version of the package and installation procedure.</strong>
-<strong>!! A new version is on its way with proper driver signature and Windows service proper management.</strong></p>
-<h2 id="using-the-installer"><a class="header" href="#using-the-installer">Using the installer</a></h2>
-<p>In this first itration of the package, you'll need to enable Test Mode on Windows prior to proceed to this installation, then reboot. (Next version will have an officially signed version of the driver, so this won't be ncessaerry anymore.)</p>
-<pre><code>bcdedit.exe -set TESTSIGNING ON
-</code></pre>
-<p>The installer will ensure that test mode is enabled and fail otherwise, but activation of test mode <strong>and a reboot</strong> is needed before anyway.</p>
-<p>Then download the <a href="https://scaphandre.s3.fr-par.scw.cloud/x86_64/scaphandre_0.5.0_installer.exe">package</a> and install it <strong>as an administrator</strong>.</p>
-<p>Once installed, you should be able to run scaphandre from Powershell, by running :</p>
-<pre><code>&amp; 'C:\Program Files (x86)\scaphandre\scaphandre.exe' stdout
-</code></pre>
-<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
-<p>An error such as</p>
-<pre><code>scaphandre::sensors::msr_rapl: Failed to open device : HANDLE(-1)
-</code></pre>
-<p>means that the driver is not properly setup. Check it's state by running:</p>
-<pre><code>driverquery /v | findstr capha
-</code></pre>
-<p>If there is not item returned, the installation of the driver encountered an issue.</p>
-<p>If the service is STOPPED, there is also something wrong.</p>
-<h2 id="compilation"><a class="header" href="#compilation">Compilation</a></h2>
-<p>If you look for compiling Scaphandre and its driver yourself, see <a href="tutorials/compilation-windows.html">Compilation for Windows</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="install-scaphandre-on-windows-experimental"><a class="header" href="#install-scaphandre-on-windows-experimental">Install Scaphandre on Windows (experimental)</a></h1>
+<p>A better procedure and packaging should come soon.</p>
+<p>The release 0.5.0 of Scaphandre can be tested on windows by compiling both the kernel driver and Scaphandre. See <a href="tutorials/compilation-windows.html">Compilation for Windows (experimental)</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="run-a-complete-stack-with-docker-compose"><a class="header" href="#run-a-complete-stack-with-docker-compose">Run a complete stack with docker-compose</a></h1>
 <p>If you'd like to try scaphandre and see the data in a decent visualization tool, there is a docker-compose in the repository to install scaphandre along side with <a href="https://prometheus.io">prometheus</a> and <a href="https://grafana.com">grafana</a>.</p>
 <p>Once you have cloned the repository, just move to the docker-compose folder and run the stack:</p>
@@ -433,8 +413,8 @@ The scaphandre agent on the hypervisor will <strong>compute the metrics meaningf
 <p>Those are prometheus-push exporter CLI options. Run the executable to get the reference of the options :</p>
 <pre><code>/usr/bin/scaphandre-prometheuspush --help
 </code></pre>
-<p>A simple configuration to target Push Gateway reachable on https://myserver.mydomain:PORT would look like :</p>
-<pre><code>SCAPHANDRE_ARGS=&quot;prometheus-push -H myserver.mydomain -S https -p PORT&quot;
+<p>A simple configuration to target Push Gateway reachable on https://myserver.mydomain:PORT and send data every 30 seconds would look like :</p>
+<pre><code>SCAPHANDRE_ARGS=&quot;prometheus-push -H myserver.mydomain -S https -p PORT -s 30&quot;
 </code></pre>
 <p>Once the configuration is changed, you can restart the service and ensure it is enabled as well for next reboot :</p>
 <pre><code>systemctl restart scaphandre-prometheuspush &amp;&amp; systemctl enable scaphandre-prometheuspush
@@ -524,10 +504,10 @@ RAPL stands for <a href="https://01.org/blogs/2014/running-average-power-limit-%
 <p>As introduced in the <a href="explanations/internal-structure.html#sensors">sensors</a> section, the <a href="explanations/../references/exporter-qemu.html">Qemu</a> exporter, is very specific. It is only intended to collect metrics related to running virtual machines on a Qemu/KVM hypervisor. Those metrics can then be made available to each virtual machine and their own scaphandre instance, running the <a href="explanations/../references/sensor-powercap_rapl.html">PowercapRAPL</a> sensor (with the <code>--vm</code> flag on). The qemu exporter puts VM's metrics in files the same way the powercap kernel module does it. It mimics this behavior, so the sensor can act the same way it would on a bare metal machine.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="about-containers"><a class="header" href="#about-containers">About containers</a></h1>
 <p>There are several ways scaphandre can interact with containers.</p>
-<p>You may run scaphandre <strong>in a container</strong>, to not have to manage the dependencies, then measure the power consumption of the <strong>bare metal host</strong>. This is described in the <a href="explanations/../tutorials/quickstart.html">quickstart tutorial</a>. Note that you need to expose <code>/sys/class/powercap</code> and <code>/proc</code> as volumes in the container to allow scaphandre to get the relevant metrics from the bare metal host.</p>
+<p>You may run scaphandre <strong>in a container</strong>, to not have to manage the dependencies, then measure the power consumption of the <strong>bare metal host</strong>. This is described in the <a href="explanations/../tutorials/getting_started.html">quickstart tutorial</a>. Note that you need to expose <code>/sys/class/powercap</code> and <code>/proc</code> as volumes in the container to allow scaphandre to get the relevant metrics from the bare metal host.</p>
 <p>Scaphandre may help you measure the <strong>power consumption of containers</strong> running on a given host. You can already get to that goal using the tips provided in the howto section called <a href="explanations/../how-to_guides/get-process-level-power-in-grafana.html">&quot;Get process level power consumption&quot;</a>. It may still require some tweaking and inventiveness from you in making the approriate queries to your favorite TSDB. This should be made easier by the upcoming <a href="https://github.com/hubblo-org/scaphandre/projects/1">scaphandre features</a>.</p>
-<p>Another use case scenario would be to measure the power consumption of a <strong>container orchestrator</strong> (like <a href="https://kubernetes.io/">kubernetes</a>), its nodes and the containers and applications running on it. This is a feature we are <a href="https://github.com/hubblo-org/scaphandre/issues/29#issuecomment-755353175">currently working on</a> (you may try yourself the helm chart that is proposed in that thread, before it is officially supported).</p>
-<p>As described <a href="explanations/../compatibility.html">here</a>, scaphandre provides several ways (<a href="explanations/../explanations/sensors.html">sensors</a>) to collect the power consumption metrics. Depending on your use case a sensor should be more suitable than the other. Each of them comes with strengths and weaknesses. This is basically always a tradeoff between precision and simplicity. This is especially true if you run a container-based workloads on public cloud instances. We are working to provide a solution <a href="https://github.com/hubblo-org/scaphandre/issues/25">for that as well</a>.</p>
+<p>Another use case scenario is measuring the power consumption of a <strong>container orchestrator</strong> (like <a href="https://kubernetes.io/">kubernetes</a>), its nodes and the containers and applications running on it. Scaphandre can be installed on Kubernetes via the Helm chart and there is a <a href="explanations/../tutorials/kubernetes.html">tutorial</a> for installing it along with Prometheus and Grafana to view the metrics.</p>
+<p>As described <a href="explanations/../compatibility.html">here</a>, scaphandre provides several ways (<a href="explanations/../explanations/internal-structure.html#sensors">sensors</a>) to collect the power consumption metrics. Depending on your use case a sensor should be more suitable than the other. Each of them comes with strengths and weaknesses. This is basically always a tradeoff between precision and simplicity. This is especially true if you run a container-based workloads on public cloud instances. We are working to provide a solution <a href="https://github.com/hubblo-org/scaphandre/issues/25">for that as well</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-exporter"><a class="header" href="#json-exporter">JSON exporter</a></h1>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>You can launch the JSON exporter this way (running the default powercap_rapl sensor):</p>
@@ -908,7 +888,7 @@ and <a href="https://www.phoronix.com/scan.php?page=news_item&amp;px=AMD-RAPL-Li
 </ul>
 <h2 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h2>
 <p>If in <code>--vm</code> mode, you want to read metrics from another path than the default <code>/var/scaphandre</code>, set env var <code>SCAPHANDRE_POWERCAP_PATH</code> with the desired path.</p>
-<h2 id="troubleshooting-1"><a class="header" href="#troubleshooting-1">Troubleshooting</a></h2>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
 <h3 id="when-running-scaphandre-on-ubuntu-20xx-i-get-a-permission-denied-error"><a class="header" href="#when-running-scaphandre-on-ubuntu-20xx-i-get-a-permission-denied-error">When running scaphandre on Ubuntu 20.xx I get a <code>permission denied</code> error</a></h3>
 <p>Since linux kernel package 5.4.0-53.59 in debian/ubuntu, powercap attributes are only accessible by root:</p>
 <pre><code>linux (5.4.0-53.59) focal; urgency=medium
@@ -941,7 +921,7 @@ This is even harder in a virtualization environement or as public cloud customer
 <tr><td style="text-align: center">PowercapRAPL</td><td style="text-align: center">Yes (see above)</td><td style="text-align: center">No</td><td style="text-align: center">No</td></tr>
 <tr><td style="text-align: center">MsrRAPL</td><td style="text-align: center">No</td><td style="text-align: center">Yes (tested on windows 10/server 2019)</td><td style="text-align: center">No</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="troubleshooting-2"><a class="header" href="#troubleshooting-2">Troubleshooting</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="troubleshooting-1"><a class="header" href="#troubleshooting-1">Troubleshooting</a></h1>
 <h3 id="i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter"><a class="header" href="#i-get-a-permission-denied-error-when-i-run-scaphandre-no-matter-what-is-the-exporter">I get a <strong>permission denied</strong> error when I run scaphandre, no matter what is the exporter</a></h3>
 <p>On some Linux distributions (ubuntu 20.04 for sure), the energy counters files that the <a href="references/sensor-powercap_rapl.html">PowercapRAPL sensor</a> uses, are owned by root. (since late 2020)</p>
 <p>To ensure this is your issue and fix that quickly you can run the <a href="https://raw.githubusercontent.com/hubblo-org/scaphandre/main/init.sh">init.sh</a> script:</p>
@@ -952,7 +932,7 @@ This is even harder in a virtualization environement or as public cloud customer
 <p>It can mean that your cpu doesn't support RAPL. Please refer to the <a href="compatibility.html">compatibility</a> section to be sure.</p>
 <h3 id="i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error"><a class="header" href="#i-cant-mount-the-required-kernel-modules-getting-a-couldnt-find-xxx-modules-error">I can't mount the required kernel modules, getting a <code>Could'nt find XXX modules</code> error</a></h3>
 <p>If you are in a situation comparable to <a href="https://github.com/hubblo-org/scaphandre/issues/59">this one</a>, you may need to install additional packages.</p>
-<p>On ubuntu 20.01 and 20.10, try to install <code>linux-modules-extra-$(uname-r)</code> with apt. Then you should be able to <code>modprobe intel_rapl_common</code>.</p>
+<p>On ubuntu 20.01 and 20.10, try to install <code>linux-modules-extra-$(uname -r)</code> with apt. Then you should be able to <code>modprobe intel_rapl_common</code>.</p>
 <h3 id="on-an-amd-cpu-machine-i-get-the-following-stracktrace"><a class="header" href="#on-an-amd-cpu-machine-i-get-the-following-stracktrace">On an AMD cpu machine, I get the following stracktrace</a></h3>
 <pre><code>scaphandre::sensors::powercap_rapl: Couldn't find intel_rapl modules.
 thread 'main' panicked at 'Trick: if you are running on a vm, do not forget to use --vm parameter invoking scaphandre at the command line', src/sensors/mod.rs:238:18
@@ -1069,6 +1049,22 @@ Modules that are dedicated to send this data to a given channel or remote system
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>
