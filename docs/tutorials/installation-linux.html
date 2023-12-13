@@ -155,8 +155,9 @@
 <ul>
 <li><a href="docker-compose.html">quickly try the project with docker-compose/docker stack</a></li>
 <li><a href="kubernetes.html">run scaphandre on kubernetes</a></li>
+<li><a href="../how-to_guides/install-prometheuspush-only-rhel.html">run scaphandre on RHEL, with prometheus-push mode</a></li>
 </ul>
-<p>Brave contributors work on system packages, please have a try and/or contribute to:</p>
+<p>Kudos to contributors who work on system packages, please have a try and/or contribute to:</p>
 <ul>
 <li><a href="https://github.com/barnumbirr/scaphandre-debian">Debian package</a>, maintainer: @barnumbirr</li>
 <li><a href="https://github.com/mmai/scaphandre-flake">NixOS package</a>, maintainer: @mmai</li>
@@ -198,6 +199,22 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>
