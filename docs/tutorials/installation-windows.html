@@ -149,6 +149,10 @@
 <p>For example, to run the prometheus-push exporter in the background and target the Prometheus Push Gateway server with ip address <code>198.51.100.5</code> using HTTPS on port 443 and a step to send metrics of 45s, without checking the certificate of the push gateway (remove that option if you have a properly signed TLS certificate):</p>
 <pre><code>sc.exe create Scaphandre binPath=&quot;C:\Program Files (x86)\scaphandre\scaphandre.exe prometheus-push -H 198.51.100.5 -s 45 -S https -p 443 --no-tls-check&quot; DisplayName=Scaphandre start=auto
 </code></pre>
+<p>Ensure the service is started in Services.msc, start it by right clicking on it, then Start, otherwise.</p>
+<p>To delete the service, you can do it in Services.msc, or: </p>
+<pre><code>sc.exe delete Scaphandre
+</code></pre>
 <h3 id="using-an-installer-including-a-development-version-of-the-driver"><a class="header" href="#using-an-installer-including-a-development-version-of-the-driver">Using an installer including a development version of the driver</a></h3>
 <p>If you are running a development version of the installer (which probably means a development version of the <a href="https://github.com/hubblo-org/windows-rapl-driver/">driver</a>), you'll need to enable Test Mode on Windows prior to proceed to this installation, then reboot.</p>
 <pre><code>bcdedit.exe -set TESTSIGNING ON
