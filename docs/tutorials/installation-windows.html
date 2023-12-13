@@ -141,9 +141,34 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="install-scaphandre-on-windows-experimental"><a class="header" href="#install-scaphandre-on-windows-experimental">Install Scaphandre on Windows (experimental)</a></h1>
-<p>A better procedure and packaging should come soon.</p>
-<p>The release 0.5.0 of Scaphandre can be tested on windows by compiling both the kernel driver and Scaphandre. See <a href="compilation-windows.html">Compilation for Windows (experimental)</a></p>
+                        <h1 id="install-scaphandre-on-windows"><a class="header" href="#install-scaphandre-on-windows">Install Scaphandre on Windows</a></h1>
+<p><strong>!! Warning: Windows version of Scaphandre is still in early stage. !!</strong></p>
+<h2 id="using-the-installer"><a class="header" href="#using-the-installer">Using the installer</a></h2>
+<p>Download the <a href="https://scaphandre.s3.fr-par.scw.cloud/x86_64/scaphandre_0.5.0_installer.exe">package</a> and install it <strong>as an administrator</strong>.</p>
+<h3 id="configuring-a-windows-service-to-run-scaphandre-in-the-background"><a class="header" href="#configuring-a-windows-service-to-run-scaphandre-in-the-background">Configuring a Windows service to run Scaphandre in the background</a></h3>
+<p>For example, to run the prometheus-push exporter in the background and target the Prometheus Push Gateway server with ip address <code>198.51.100.5</code> using HTTPS and a step to send metrics of 45s:</p>
+<pre><code>SC CREATE Scaphandre Displayname=&quot;Scaphandre&quot; binpath=&quot;C:\Program Files (x86)\scaphandre\scaphandre.exe -H 198.51.100.5 -S -s 45&quot; start=auto
+</code></pre>
+<h3 id="using-an-installer-including-a-development-version-of-the-driver"><a class="header" href="#using-an-installer-including-a-development-version-of-the-driver">Using an installer including a development version of the driver</a></h3>
+<p>If you are running a development version of the installer (which probably means a development version of the <a href="https://github.com/hubblo-org/windows-rapl-driver/">driver</a>), you'll need to enable Test Mode on Windows prior to proceed to this installation, then reboot.</p>
+<pre><code>bcdedit.exe -set TESTSIGNING ON
+bcdedit.exe -set nointegritychecks on
+</code></pre>
+<p>Beware: in this case, activation of test mode <strong>and a reboot</strong> is needed before anyway.</p>
+<p>Once installed, you should be able to run scaphandre from Powershell, by running :</p>
+<pre><code>&amp; 'C:\Program Files (x86)\scaphandre\scaphandre.exe' stdout
+</code></pre>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<p>An error such as</p>
+<pre><code>scaphandre::sensors::msr_rapl: Failed to open device : HANDLE(-1)
+</code></pre>
+<p>means that the driver is not properly setup. Check it's state by running:</p>
+<pre><code>driverquery /v | findstr capha
+</code></pre>
+<p>If there is not item returned, the installation of the driver encountered an issue.</p>
+<p>If the service is STOPPED, there is also something wrong.</p>
+<h2 id="compilation"><a class="header" href="#compilation">Compilation</a></h2>
+<p>If you look for compiling Scaphandre and its driver yourself, see <a href="compilation-windows.html">Compilation for Windows</a></p>
 
                     </main>
 
@@ -174,6 +199,22 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>
