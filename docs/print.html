@@ -240,8 +240,8 @@ Then you have the 5 processes consuming the most power during the last two measu
 <h2 id="using-the-installer"><a class="header" href="#using-the-installer">Using the installer</a></h2>
 <p>Download the <a href="https://scaphandre.s3.fr-par.scw.cloud/x86_64/scaphandre_0.5.0_installer.exe">package</a> and install it <strong>as an administrator</strong>.</p>
 <h3 id="configuring-a-windows-service-to-run-scaphandre-in-the-background"><a class="header" href="#configuring-a-windows-service-to-run-scaphandre-in-the-background">Configuring a Windows service to run Scaphandre in the background</a></h3>
-<p>For example, to run the prometheus-push exporter in the background and target the Prometheus Push Gateway server with ip address <code>198.51.100.5</code> using HTTPS and a step to send metrics of 45s:</p>
-<pre><code>SC CREATE Scaphandre Displayname=&quot;Scaphandre&quot; binpath=&quot;C:\Program Files (x86)\scaphandre\scaphandre.exe -H 198.51.100.5 -S -s 45&quot; start=auto
+<p>For example, to run the prometheus-push exporter in the background and target the Prometheus Push Gateway server with ip address <code>198.51.100.5</code> using HTTPS on port 443 and a step to send metrics of 45s, without checking the certificate of the push gateway (remove that option if you have a properly signed TLS certificate):</p>
+<pre><code>sc.exe create Scaphandre binPath=&quot;C:\Program Files (x86)\scaphandre\scaphandre.exe prometheus-push -H 198.51.100.5 -s 45 -S https -p 443 --no-tls-check&quot; DisplayName=Scaphandre start=auto
 </code></pre>
 <h3 id="using-an-installer-including-a-development-version-of-the-driver"><a class="header" href="#using-an-installer-including-a-development-version-of-the-driver">Using an installer including a development version of the driver</a></h3>
 <p>If you are running a development version of the installer (which probably means a development version of the <a href="https://github.com/hubblo-org/windows-rapl-driver/">driver</a>), you'll need to enable Test Mode on Windows prior to proceed to this installation, then reboot.</p>
@@ -1169,22 +1169,6 @@ Modules that are dedicated to send this data to a given channel or remote system
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
         <script>
