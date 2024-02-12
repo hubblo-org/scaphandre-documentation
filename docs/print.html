@@ -239,7 +239,7 @@ Then you have the 5 processes consuming the most power during the last two measu
 <div style="break-before: page; page-break-before: always;"></div><h1 id="install-scaphandre-on-windows"><a class="header" href="#install-scaphandre-on-windows">Install Scaphandre on Windows</a></h1>
 <p><strong>!! Warning: Windows version of Scaphandre is still in early stage. !!</strong></p>
 <h2 id="using-the-installer"><a class="header" href="#using-the-installer">Using the installer</a></h2>
-<p>Download the <a href="https://scaphandre.s3.fr-par.scw.cloud/x86_64/scaphandre_0.5.0_installer.exe">package</a> and install it <strong>as an administrator</strong>.</p>
+<p>Download the latest exe installer <a href="https://github.com/hubblo-org/scaphandre/releases">from the release page</a> and install it <strong>as an administrator</strong>.</p>
 <h3 id="configuring-a-windows-service-to-run-scaphandre-in-the-background"><a class="header" href="#configuring-a-windows-service-to-run-scaphandre-in-the-background">Configuring a Windows service to run Scaphandre in the background</a></h3>
 <p>For example, to run the prometheus-push exporter in the background and target the Prometheus Push Gateway server with ip address <code>198.51.100.5</code> using HTTPS on port 443 and a step to send metrics of 45s, without checking the certificate of the push gateway (remove that option if you have a properly signed TLS certificate):</p>
 <pre><code>sc.exe create Scaphandre binPath=&quot;C:\Program Files (x86)\scaphandre\scaphandre.exe prometheus-push -H 198.51.100.5 -s 45 -S https -p 443 --no-tls-check&quot; DisplayName=Scaphandre start=auto
@@ -754,7 +754,7 @@ This will allow to easily create charts consumption for each vm and defined whic
 <p>Metrics provided Scaphandre are documented <a href="references/references/metrics.html">here</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="prometheuspush-exporter-for-prometheus-push-gateway"><a class="header" href="#prometheuspush-exporter-for-prometheus-push-gateway">PrometheusPush Exporter for Prometheus Push Gateway</a></h1>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<p>You can launch the prometheus exporter this way (running the default powercap_rapl sensor):</p>
+<p>You can launch the prometheus exporter this way:</p>
 <pre><code>scaphandre prometheus-push
 </code></pre>
 <p>As always exporter's options can be displayed with <code>-h</code>:</p>
