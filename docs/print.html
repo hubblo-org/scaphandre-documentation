@@ -751,7 +751,7 @@ Options:
 <p>With default options values, the metrics are exposed on http://localhost:8080/metrics.</p>
 <p>Use -q or --qemu option if you are running scaphandre on a hypervisor. In that case a label with the vm name will be added to all <code>qemu-system*</code> processes.
 This will allow to easily create charts consumption for each vm and defined which one is the top contributor.</p>
-<p>Metrics provided Scaphandre are documented <a href="references/references/metrics.html">here</a>.</p>
+<p>Metrics provided Scaphandre are documented <a href="references/metrics.html">here</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="qemu-exporter"><a class="header" href="#qemu-exporter">Qemu exporter</a></h1>
 <p>Computes energy consumption metrics for each Qemu/KVM virtual machine found on the host.
 Exposes those metrics as filetrees compatible with the <a href="references/sensor-powercap_rapl.html">powercap_rapl sensor</a>.</p>
@@ -881,7 +881,7 @@ As a reference here is a Riemann configuration:</p>
         (fn [event] (info &quot;expired&quot; event))))))
 </code></pre>
 <h2 id="metrics-exposed"><a class="header" href="#metrics-exposed">Metrics exposed</a></h2>
-<p>Metrics provided Scaphandre are documented <a href="references/references/metrics.html">here</a>.</p>
+<p>Metrics provided Scaphandre are documented <a href="references/metrics.html">here</a>.</p>
 <p>There is only one exception about <code>process_power_consumption_microwatts</code> each process has a service name <code>process_power_consumption_microwatts_pid_exe</code>.</p>
 <p>As an example, process consumption can be retrieved using the following Riemann query:</p>
 <pre><code>(service =~ &quot;process_power_consumption_microwatts_%_firefox&quot;) or (service =~ &quot;process_power_consumption_microwatts_%_scaphandre&quot;)
@@ -950,7 +950,7 @@ Options:
 <p>With default options values, the metrics are sent to http://localhost:8080 every 60 seconds</p>
 <p>Use -q or --qemu option if you are running scaphandre on a hypervisor. In that case a label with the vm name will be added to all <code>qemu-system*</code> processes.
 This will allow to easily create charts consumption for each vm and defined which one is the top contributor.</p>
-<p>Metrics provided Scaphandre are documented <a href="references/references/metrics.html">here</a>. </p>
+<p>Metrics provided Scaphandre are documented <a href="references/metrics.html">here</a>. </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="msr_rapl-sensor"><a class="header" href="#msr_rapl-sensor">MSR_RAPL sensor</a></h1>
 <h2 id="pre-requesites"><a class="header" href="#pre-requesites">Pre-requesites</a></h2>
 <p>At the time those lines are written, this sensor works only on:</p>

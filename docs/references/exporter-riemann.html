@@ -219,7 +219,7 @@ As a reference here is a Riemann configuration:</p>
         (fn [event] (info &quot;expired&quot; event))))))
 </code></pre>
 <h2 id="metrics-exposed"><a class="header" href="#metrics-exposed">Metrics exposed</a></h2>
-<p>Metrics provided Scaphandre are documented <a href="references/metrics.html">here</a>.</p>
+<p>Metrics provided Scaphandre are documented <a href="metrics.html">here</a>.</p>
 <p>There is only one exception about <code>process_power_consumption_microwatts</code> each process has a service name <code>process_power_consumption_microwatts_pid_exe</code>.</p>
 <p>As an example, process consumption can be retrieved using the following Riemann query:</p>
 <pre><code>(service =~ &quot;process_power_consumption_microwatts_%_firefox&quot;) or (service =~ &quot;process_power_consumption_microwatts_%_scaphandre&quot;)
